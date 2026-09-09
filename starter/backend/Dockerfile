@@ -14,6 +14,9 @@ RUN apk update && \
   libffi-dev \
   && pip install pipenv
 
+# Allow GCC to compile uwsgi without failing on modern pointer checks
+ENV CFLAGS="-Wno-error=incompatible-pointer-types"
+
 RUN mkdir -p /var/www/app && mkdir /app
 
 COPY Pipfile* /app
