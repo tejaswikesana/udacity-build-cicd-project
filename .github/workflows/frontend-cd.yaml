@@ -63,12 +63,14 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECR
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: frontend
-          IMAGE_TAG: ${{ github.sha }}
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            ECR_REPOSITORY: frontend
+            IMAGE_TAG: ${{ github.sha }}
         run: |
-          cd starter/frontend
-          docker build --build-arg REACT_APP_MOVIE_API_URL="http://a138f5d307e884781be93a969ca1a770-1474673483.us-east-1.elb.amazonaws.com" -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+            cd starter/frontend
+            docker build --build-arg REACT_APP_MOVIE_API_URL="http://a138f5d307e884781be93a969ca1a770-1474673483.us-east-1.elb.amazonaws.com" -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v2
